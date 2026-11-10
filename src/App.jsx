@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 /*
 THREE JS STEPS : 
@@ -51,7 +52,7 @@ const camera = new THREE.PerspectiveCamera(
 
 // set camera position
 
-camera.position.z = 3;
+// camera.position.z = 3;
 // camera.position.x = -1;
 // camera.position.y = -1;
 
@@ -65,7 +66,10 @@ camera.position.z = 3;
 
 // cube.rotation.set(Math.PI / 3, Math.PI / 5, Math.PI / 3);
 
-camera.scale.x = 2;
+// camera.scale.x = 2;
+
+camera.position.set(0, 0, 3);
+camera.lookAt(0, 0, 0); // camera will always look at center
 
 // renderer
 const canvas = document.querySelector("#webgl");
@@ -73,6 +77,11 @@ console.log(canvas);
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 
 renderer.setSize(size.width, size.height);
+
+// add orbit controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.07;
 
 // Resize for each screen
 window.addEventListener("resize", () => {
@@ -87,6 +96,7 @@ window.addEventListener("resize", () => {
 const animate = () => {
   // const delta = clock.getElapsedTime; // clock Deprecated
   timer.update();
+  controls.update(); // orbit controls update
   const delta = timer.getDelta();
   cube.rotation.y += delta;
   cube.rotation.x += delta;
