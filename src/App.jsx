@@ -15,6 +15,11 @@ THREE JS STEPS :
 
 */
 
+const size = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+
 // scene
 const scene = new THREE.Scene();
 
@@ -32,12 +37,17 @@ const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 
 // Camera
+
+//! Perspective camera => refer to human eye
 const camera = new THREE.PerspectiveCamera(
   75, // fov
-  window.innerWidth / window.innerHeight, // aspect ratio
+  size.width / size.height, // aspect ratio
   0.1, // near distance
   100, // far distance
 );
+
+//! Orthographic (90 deg  straight view) Camera => bounds (left,right,top,bottom) , near , far => used in 2d animation
+// const camera = new THREE.OrthographicCamera(-2, 2, 2, -1, 0.1, 100);
 
 // set camera position
 
@@ -61,7 +71,18 @@ camera.scale.x = 2;
 const canvas = document.querySelector("#webgl");
 console.log(canvas);
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
-renderer.setSize(window.innerWidth, window.innerHeight);
+
+renderer.setSize(size.width, size.height);
+
+// Resize for each screen
+window.addEventListener("resize", () => {
+  size.width = window.innerWidth;
+  size.height = window.innerHeight;
+
+  camera.aspect = size.width / size.height;
+  camera.updateProjectionMatrix(); // Update camera
+  renderer.setSize(size.width, size.height);
+});
 
 const animate = () => {
   // const delta = clock.getElapsedTime; // clock Deprecated
