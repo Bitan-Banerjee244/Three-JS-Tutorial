@@ -18,6 +18,10 @@ THREE JS STEPS :
 // scene
 const scene = new THREE.Scene();
 
+// clock
+// const clock = new THREE.Clock(); // Deprecated
+const timer = new THREE.Timer(); // Use this for exact same frame of reference of each system
+
 // 3d Object - mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: "#ff0000" });
@@ -49,9 +53,9 @@ camera.position.z = 3;
 // cube.rotation.y = Math.PI / 4;
 // cube.rotation.z = Math.PI / 3;
 
-cube.rotation.set(Math.PI / 3, Math.PI / 5, Math.PI / 3);
+// cube.rotation.set(Math.PI / 3, Math.PI / 5, Math.PI / 3);
 
-camera.scale.x = 2 
+camera.scale.x = 2;
 
 // renderer
 const canvas = document.querySelector("#webgl");
@@ -59,7 +63,17 @@ console.log(canvas);
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-renderer.render(scene, camera);
+const animate = () => {
+  // const delta = clock.getElapsedTime; // clock Deprecated
+  timer.update();
+  const delta = timer.getDelta();
+  cube.rotation.y += delta;
+  cube.rotation.x += delta;
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+};
+
+animate();
 
 function App() {
   return null;
