@@ -13,7 +13,7 @@ THREE JS STEPS :
 5. Set Renderer and set its size
 6. Render the scene and camera
 
-*/  
+*/
 
 // scene
 const scene = new THREE.Scene();
@@ -36,12 +36,33 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 // set camera position
+
 camera.position.z = 3;
+// camera.position.x = -1;
+// camera.position.y = -1;
+
+// or
+
+// camera.position.set(1,-2,2);
+
+// cube.rotation.x = Math.PI / 4;
+// cube.rotation.y = Math.PI / 4;
+// cube.rotation.z = Math.PI / 3;
+
+cube.rotation.set(Math.PI / 3, Math.PI / 5, Math.PI / 3);
+
+camera.scale.x = 2 
 
 // renderer
 const canvas = document.querySelector("#webgl");
-console.log(canvas)
+console.log(canvas);
 const renderer = new THREE.WebGLRenderer({ canvas: canvas });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 renderer.render(scene, camera);
+
+function App() {
+  return null;
+}
+
+export default App;
