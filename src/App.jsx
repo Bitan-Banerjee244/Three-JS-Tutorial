@@ -45,11 +45,20 @@ const texture2 = textureLoader.load("./image.png");
 texture2.colorSpace = THREE.SRGBColorSpace;
 
 // Properties
-texture2.repeat.x = 3;
-texture2.repeat.y = 3;
-texture.offset.x = 10;
-texture.wrapS = THREE.RepeatWrapping;
-texture.wrapT = THREE.RepeatWrapping;
+// texture2.repeat.x = 3;
+// texture2.repeat.y = 3;
+// texture.offset.x = 10;
+// texture.wrapS = THREE.RepeatWrapping;
+// texture.wrapT = THREE.RepeatWrapping;
+
+// Filtering 
+// texture2.minFilter = THREE.LinearFilter; // blurry effect
+// texture2.magFilter = THREE.LinearFilter; // blurry effect
+texture2.magFilter = THREE.NearestFilter; // blurry effect
+
+// texture optimization (Mip-Mapping) => must be the resolution of 2 power
+
+
 
 // scene
 const scene = new THREE.Scene();
