@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import GUI from "lil-gui";
+import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 /*
 THREE JS STEPS : 
@@ -60,6 +61,28 @@ texture2.magFilter = THREE.NearestFilter; // blurry effect
 
 // texture optimization (Mip-Mapping) => must be the resolution of 2 power
 
+// 3d rendering
+const gltfLoader = new GLTFLoader();
+let mixer;
+gltfLoader.load(
+  "./model.glb",
+  (gltf) => {
+    let model = gltf.scene;
+    if (gltf.animations && gltf.animations.length) {
+      // console.log(gltf.animations);
+      mixer = new THREE.AnimationMixer(model);
+      const action = mixer.clipAction(gltf.animations[3])
+      action.play();
+    }
+
+    scene.add(gltf.scene);
+    console.log("Model Loaded");
+    console.log(gltf);
+  },
+  () => console.log("Loading"),
+  () => console.log("Error"),
+);
+
 // scene
 const scene = new THREE.Scene();
 
@@ -69,8 +92,8 @@ const timer = new THREE.Timer(); // Use this for exact same frame of reference o
 
 //* Lights
 
-// ambient light 
-const ambientLight = new THREE.AmbientLight(0xffffff,0.7); // equal amount of light in each direction ~ no shadow
+// ambient light
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.7); // equal amount of light in each direction ~ no shadow
 scene.add(ambientLight);
 
 // directional Light
@@ -99,7 +122,6 @@ scene.add(ambientLight);
 // scene.add(spotLightHelper);
 
 // HemisphereLight,RectAreaLight etc
-
 
 // 3d Object - mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -172,7 +194,7 @@ positionFolder
   .name("Position Z");
 
 // Add Object to scene
-scene.add(cube);
+// scene.add(cube);
 
 // Camera
 
@@ -238,6 +260,10 @@ const animate = () => {
   const delta = timer.getDelta();
   cube.rotation.y += delta;
   cube.rotation.x += delta;
+
+  if(mixer){
+    mixer.update(delta)
+  }
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 };
@@ -249,3 +275,5 @@ function App() {
 }
 
 export default App;
+
+// 3d model ext : .gltf,.glb,.ob,.fbx,.stl
