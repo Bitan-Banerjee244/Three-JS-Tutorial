@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import GUI from "lil-gui";
 
 /*
 THREE JS STEPS : 
@@ -19,6 +20,11 @@ THREE JS STEPS :
 const size = {
   width: window.innerWidth,
   height: window.innerHeight,
+};
+
+const gui = new GUI();
+const property = {
+  color: "#ff0000",
 };
 
 // scene
@@ -47,11 +53,41 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 
 const material = new THREE.MeshBasicMaterial({
   color: "#ff0000",
-  wireframe: true,
+  // wireframe: true,
 });
 
 const cube = new THREE.Mesh(geometry, material);
 
+// Creating GUI for position change
+
+gui.add(cube, "visible");
+gui.add(material, "wireframe");
+gui.addColor(property, "color").onChange(() => {
+  material.color.set(property.color);
+});
+
+const positionFolder = gui.addFolder("Position");
+
+positionFolder
+  .add(cube.position, "x")
+  .min(-3)
+  .max(3)
+  .step(0.01)
+  .name("Position X");
+positionFolder
+  .add(cube.position, "y")
+  .min(-3)
+  .max(3)
+  .step(0.01)
+  .name("Position Y");
+positionFolder
+  .add(cube.position, "z")
+  .min(-3)
+  .max(3)
+  .step(0.01)
+  .name("Position Z");
+
+  
 // Add Object to scene
 scene.add(cube);
 
