@@ -30,7 +30,25 @@ const timer = new THREE.Timer(); // Use this for exact same frame of reference o
 
 // 3d Object - mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: "#ff0000" });
+// const material = new THREE.MeshBasicMaterial({ color: "#ff0000" , wireframe:true });
+// const geometry = new THREE.SphereGeometry(1, 32, 16);
+// const geometry = new THREE.OctahedronGeometry();
+
+// Custom Geometry
+// const geometry = new THREE.BufferGeometry();
+// const count = 10;
+// const positionArray = new Float32Array(count * 3 * 3);
+
+// for (let i = 0; i < count * 3 * 3; i++) {
+//   positionArray[i] = (Math.random() - 0.5)*4;
+// }
+
+// geometry.setAttribute('position',new THREE.BufferAttribute(positionArray,3))
+
+const material = new THREE.MeshBasicMaterial({
+  color: "#ff0000",
+  wireframe: true,
+});
 
 const cube = new THREE.Mesh(geometry, material);
 
