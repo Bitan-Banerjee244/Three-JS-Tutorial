@@ -67,6 +67,40 @@ const scene = new THREE.Scene();
 // const clock = new THREE.Clock(); // Deprecated
 const timer = new THREE.Timer(); // Use this for exact same frame of reference of each system
 
+//* Lights
+
+// ambient light 
+const ambientLight = new THREE.AmbientLight(0xffffff,0.7); // equal amount of light in each direction ~ no shadow
+scene.add(ambientLight);
+
+// directional Light
+// const directionalLight = new THREE.DirectionalLight(0xffffff,2)
+// directionalLight.position.set(2,-2,1);
+// scene.add(directionalLight)
+// const directionalLightHelper = new THREE.DirectionalLightHelper(directionalLight,0.2)
+// scene.add(directionalLightHelper);
+
+// Point Light
+// const pointLight = new THREE.PointLight("aqua",300,6)
+// pointLight.position.set(1,2,3);
+// scene.add(pointLight)
+// const pointLightHelper = new THREE.PointLightHelper(pointLight,1)
+// scene.add(pointLightHelper);
+
+// spot light
+// const spotLight = new THREE.SpotLight('#0000ff',15,10,Math.PI * 0.1 , 0.3,2)
+// spotLight.position.set(0,2,1);
+// scene.add(spotLight);
+
+// spotLight.target.position.set(0,0,0);
+// scene.add(spotLight.target)
+
+// const spotLightHelper = new THREE.SpotLightHelper(spotLight,"blue")
+// scene.add(spotLightHelper);
+
+// HemisphereLight,RectAreaLight etc
+
+
 // 3d Object - mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 // const material = new THREE.MeshBasicMaterial({ color: "#ff0000" , wireframe:true });
@@ -84,7 +118,7 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 
 // geometry.setAttribute('position',new THREE.BufferAttribute(positionArray,3))
 
-// Materials 
+// Materials
 
 // Mesh material doesn't react on light
 // const material = new THREE.MeshBasicMaterial({
@@ -93,8 +127,12 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 //   // wireframe: true,
 // });
 
-const material = new THREE.MeshMatcapMaterial({
-  matcap: matcapTexture,
+// const material = new THREE.MeshMatcapMaterial({
+//   matcap: matcapTexture,
+// });
+
+const material = new THREE.MeshStandardMaterial({
+  color: "#ff0000",
 });
 
 // Light Dependent materials
@@ -195,6 +233,7 @@ window.addEventListener("resize", () => {
 const animate = () => {
   // const delta = clock.getElapsedTime; // clock Deprecated
   timer.update();
+  // spotLightHelper.update();
   controls.update(); // orbit controls update
   const delta = timer.getDelta();
   cube.rotation.y += delta;
