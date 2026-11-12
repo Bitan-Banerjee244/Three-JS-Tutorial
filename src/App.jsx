@@ -27,6 +27,30 @@ const property = {
   color: "#ff0000",
 };
 
+const loadingManager = new THREE.LoadingManager();
+
+loadingManager.onLoad = () => {
+  console.log("All Texture Loaded");
+};
+
+const textureLoader = new THREE.TextureLoader(loadingManager);
+const texture = textureLoader.load(
+  import.meta.env.VITE_IMAGE_URL,
+  () => console.log("Texture Loaded"),
+  () => console.log("Progress"),
+  () => console.log("Error"),
+);
+
+const texture2 = textureLoader.load("./image.png");
+texture2.colorSpace = THREE.SRGBColorSpace;
+
+// Properties
+texture2.repeat.x = 3;
+texture2.repeat.y = 3;
+texture.offset.x = 10;
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping;
+
 // scene
 const scene = new THREE.Scene();
 
@@ -52,7 +76,8 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 // geometry.setAttribute('position',new THREE.BufferAttribute(positionArray,3))
 
 const material = new THREE.MeshBasicMaterial({
-  color: "#ff0000",
+  // color: "#ff0000",
+  map: texture2,
   // wireframe: true,
 });
 
@@ -87,7 +112,6 @@ positionFolder
   .step(0.01)
   .name("Position Z");
 
-  
 // Add Object to scene
 scene.add(cube);
 
