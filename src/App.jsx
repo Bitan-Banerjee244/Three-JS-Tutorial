@@ -41,8 +41,10 @@ const texture = textureLoader.load(
   () => console.log("Error"),
 );
 
-const texture2 = textureLoader.load("./image.png");
+const texture2 = textureLoader.load("./image1.png");
 texture2.colorSpace = THREE.SRGBColorSpace;
+
+const matcapTexture = textureLoader.load("./image.png");
 
 // Properties
 // texture2.repeat.x = 3;
@@ -51,14 +53,12 @@ texture2.colorSpace = THREE.SRGBColorSpace;
 // texture.wrapS = THREE.RepeatWrapping;
 // texture.wrapT = THREE.RepeatWrapping;
 
-// Filtering 
+// Filtering
 // texture2.minFilter = THREE.LinearFilter; // blurry effect
 // texture2.magFilter = THREE.LinearFilter; // blurry effect
 texture2.magFilter = THREE.NearestFilter; // blurry effect
 
 // texture optimization (Mip-Mapping) => must be the resolution of 2 power
-
-
 
 // scene
 const scene = new THREE.Scene();
@@ -84,11 +84,23 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 
 // geometry.setAttribute('position',new THREE.BufferAttribute(positionArray,3))
 
-const material = new THREE.MeshBasicMaterial({
-  // color: "#ff0000",
-  map: texture2,
-  // wireframe: true,
+// Materials 
+
+// Mesh material doesn't react on light
+// const material = new THREE.MeshBasicMaterial({
+//   // color: "#ff0000",
+//   map: texture2,
+//   // wireframe: true,
+// });
+
+const material = new THREE.MeshMatcapMaterial({
+  matcap: matcapTexture,
 });
+
+// Light Dependent materials
+// const material = new THREE.MeshLambertMaterial({
+//   color: "white"
+// });
 
 const cube = new THREE.Mesh(geometry, material);
 
