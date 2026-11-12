@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import GUI from "lil-gui";
-import { GLTFLoader } from "three/examples/jsm/Addons.js";
+import { GLTFLoader, RGBELoader } from "three/examples/jsm/Addons.js";
 
 /*
 THREE JS STEPS : 
@@ -62,26 +62,36 @@ texture2.magFilter = THREE.NearestFilter; // blurry effect
 // texture optimization (Mip-Mapping) => must be the resolution of 2 power
 
 // 3d rendering
-const gltfLoader = new GLTFLoader();
-let mixer;
-gltfLoader.load(
-  "./model.glb",
-  (gltf) => {
-    let model = gltf.scene;
-    if (gltf.animations && gltf.animations.length) {
-      // console.log(gltf.animations);
-      mixer = new THREE.AnimationMixer(model);
-      const action = mixer.clipAction(gltf.animations[3])
-      action.play();
-    }
+// const gltfLoader = new GLTFLoader();
+// let mixer;
+// gltfLoader.load(
+//   "./model.glb",
+//   (gltf) => {
+//     let model = gltf.scene;
+//     if (gltf.animations && gltf.animations.length) {
+//       // console.log(gltf.animations);
+//       mixer = new THREE.AnimationMixer(model);
+//       const action = mixer.clipAction(gltf.animations[3])
+//       action.play();
+//     }
 
-    scene.add(gltf.scene);
-    console.log("Model Loaded");
-    console.log(gltf);
-  },
-  () => console.log("Loading"),
-  () => console.log("Error"),
-);
+//     scene.add(gltf.scene);
+//     console.log("Model Loaded");
+//     console.log(gltf);
+//   },
+//   () => console.log("Loading"),
+//   () => console.log("Error"),
+// );
+
+// ENVIROMENT MAP LOADER
+
+// const rgbeLoader = new RGBELoader();
+const hdrLoader = new RGBELoader();
+hdrLoader.load("./envmap.hdr", (envmap) => {
+  envmap.mapping = THREE.EquirectangularReflectionMapping;
+  scene.background = envmap;
+  scene.environment = envmap;
+});
 
 // scene
 const scene = new THREE.Scene();
@@ -145,7 +155,7 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 // Mesh material doesn't react on light
 // const material = new THREE.MeshBasicMaterial({
 //   // color: "#ff0000",
-//   map: texture2,
+//   // map: texture2,
 //   // wireframe: true,
 // });
 
@@ -155,6 +165,9 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 
 const material = new THREE.MeshStandardMaterial({
   color: "#ff0000",
+  envMapIntensity:3,
+  roughness:0.1,
+  metalness:0.9
 });
 
 // Light Dependent materials
@@ -194,7 +207,7 @@ positionFolder
   .name("Position Z");
 
 // Add Object to scene
-// scene.add(cube);
+scene.add(cube);
 
 // Camera
 
@@ -261,9 +274,9 @@ const animate = () => {
   cube.rotation.y += delta;
   cube.rotation.x += delta;
 
-  if(mixer){
-    mixer.update(delta)
-  }
+  // if(mixer){
+  //   mixer.update(delta)
+  // }
   renderer.render(scene, camera);
   requestAnimationFrame(animate);
 };
